@@ -28,7 +28,57 @@ fn main() {
     let my_ekuke = Dog::<Ekuke>{name: String::from("James"), breed: PhantomData};
     
     println!("my ekuke: {:?} {}", my_ekuke, my_ekuke.breed_name());
+    // when working with generic objects in rust, the turbo fish way of hinting the concrete type must be applied
+    // directly on the object that the generic is defined on, 
+    // 
+    // take for example i have a generic struct as follow
+    struct Car<Brand> {
+       brand: Brand,
+       year: u16,
+    }
     
+    impl<Brand> Car<Brand> {
+       fn new(brand: Brand, year: u16) -> Self {
+         Self {
+             brand, year
+         }
+       }
+    }
+    
+    let benz = Car::new("Masda", 2023); // this is valid
+    let omo = Car::<String>::new(String::from("Omo"), 2000); // notice how the turbo fish synxtax is on the struct nd not the method
+    
+    // if a trait method does not take reference to the instance it being implented on, then the trait acts on the type itself
+    trait Talkable {
+        fn talk() -> String {
+            String::from("Talking")
+        }
+    }
+    
+    impl Talkable for String {
+        
+    }
+    
+    let simple_string = String::talk();
+    println!("{simple_string}");
+    
+    struct Struct1 {}
+    struct Struct2 {}
+    
+    trait MyTrait {
+        fn hello(&self) {
+            println!("Hello!");
+        }
+    }
+    
+    impl MyTrait for Struct1{}
+    impl MyTrait for Struct2{}
+    
+    let mut v = Vec::<Box<dyn MyTrait>>::new();
+    v.push(Box::new(Struct1{}));
+    v.push(Box::new(Struct2{}));
+    
+    v.iter().for_each(|i| i.hello());
 }
 
 
