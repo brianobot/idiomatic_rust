@@ -1,3 +1,4 @@
+#![allow(dead_code)]
 
 #[derive(Debug)]
 struct Buffer<T: Default + Copy, const LENGTH: usize> {
