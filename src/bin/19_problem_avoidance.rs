@@ -1,4 +1,4 @@
-use std::cell::RefCell;
+use std::{borrow::Cow, cell::RefCell};
 
 
 
@@ -39,4 +39,13 @@ fn main() {
     
     not_so_immutable_string.borrow_mut().push_str(".");
     println!("{not_so_immutable_string:?}");
+    
+    let cow_say_what = Cow::from("Hello World");
+    println!("{cow_say_what:?}");
+    
+    let cow_dont_say_what = cow_say_what.clone().to_mut().replace("World", "Mars");
+    println!("{cow_dont_say_what:?}");
+    
+    println!("{cow_say_what:?}");
+    println!("{cow_dont_say_what:?}");
 }
